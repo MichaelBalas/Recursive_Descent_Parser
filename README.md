@@ -37,11 +37,16 @@ The work in this repository focuses on *top-down* parsers, where given a sentent
 
 &ensp;&ensp;**The Left Recursion Problem:** If a grammar has left recursion, either direct or indirect, it cannot be the basis for a top-down parser. A grammar can be modified to remove direct left recursion as follows: </br>
 &ensp;&ensp;For each non-terminal, ```A```,
-1. Group the A-rules as ```A → Aα1 | … | Aαm | β1 | β2 | … | βn```
+1. Group the A-rules as 
+```
+A → Aα1 | … | Aαm | β1 | β2 | … | βn
+```
 &ensp;&ensp;where none of the ```β‘s``` begins with ```A```
 2. Replace the original A-rules with
-```A → β1A’ | β2A’ | … | βnA’``` </br>
-```A’ → α1A’ | α2A’ | … | αmA’ | ε```
+```
+A → β1A’ | β2A’ | … | βnA’ 
+A’ → α1A’ | α2A’ | … | αmA’ | ε
+```
 
 &ensp;&ensp;The other characteristic of grammars that disallows top-down parsing is the lack of **pairwise disjointness**, the inability to determine the correct RHS on the basis of one token of lookahead. 
 ```
@@ -49,14 +54,16 @@ Def: FIRST(α) = {a | α =>* aβ }
 (If α =>* ε, ε is in FIRST(α)
 ```
 **Pairwise Disjointness Test**:</br>
-&ensp;&ensp;For each nonterminal, A, in the grammar that has more than one RHS, for each pair of rules, `A → αi` and `A → αj`, it must be true that `FIRST(αi) ⋂ FIRST(αj) = Φ`. For example:
+&ensp;&ensp;For each nonterminal, A, in the grammar that has more than one RHS, for each pair of rules, `A → αi` and `A → αj`, it must be true that `FIRST(αi) ⋂ FIRST(αj) = Φ`. For example:</br>
 ```A → a | bB | cAb```</br>
 ```A → a | aB```</br>
 &ensp;&ensp;**Left factoring** can resolve pairwise disjointness! Replace</br>
 ```<variable> → identifier | identifier [<expression>]```</br>
 with </br>
-```<variable> → identifier <new>```</br>
-```<new> → ε | [<expression>]```</br>
+```
+<variable> → identifier <new>
+<new> → ε | [<expression>]
+```
 or</br>
 ```<variable> → identifier [[<expression>]]```</br>
 (the outer brackets are metasymbols of EBNF)
